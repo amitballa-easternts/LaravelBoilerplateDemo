@@ -1,8 +1,6 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +12,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+/*
+* Snippet for a quick route reference
+*/
+
+
+
+
+Route::group([
+    'prefix' => 'v1',
+    'namespace' => 'API',
+], function () {
+
+    Route::group([
+        'namespace' => 'User',
+    ], function () {
+
+
+        Route::post('register', 'UsersAPIController@register');
+    });
+
 });
