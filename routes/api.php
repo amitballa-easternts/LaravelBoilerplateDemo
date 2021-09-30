@@ -1,6 +1,5 @@
 <?php
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
 Route::group([
     'prefix' => 'v1',
     'namespace' => 'API',
@@ -28,8 +26,9 @@ Route::group([
         'namespace' => 'User',
     ], function () {
 
-
         Route::post('register', 'UsersAPIController@register');
-    });
 
+        });
 });
+
+
