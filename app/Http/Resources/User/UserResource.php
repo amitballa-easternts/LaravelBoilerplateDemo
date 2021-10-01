@@ -30,16 +30,15 @@ class UserResource extends JsonResource
             //'state' => $this->state,
             //'city_id' => $this->city_id,
             //'city' => $this->city,
-            //'address' => $this->address,
+            'address' => $this->address,
             'status' => $this->status,
             //'status_text' => config('constants.user.status.'.$this->status),
             //'gallery' => $this->user_galleries,
             //'hobby' => $this->hobbies,
             //'role' => $this->role,
-            'email_verified_at' =>$this->email_verified_at,
+            //'email_verified_at' =>$this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
-
-        ];
+        ];       return parent::toArray($request);
     }
 }

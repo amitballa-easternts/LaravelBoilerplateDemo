@@ -1,16 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\API\User;
-
+use App\Exports\User\UsersExport;
+use App\Http\Resources\DataTrueResource;
+use App\Imports\User\UsersImport;
 use App\User;
-
+use App\Models\User\UserGallery;
 use App\Http\Requests\User\UsersRequest;
 use App\Http\Resources\User\UsersCollection;
 use App\Http\Resources\User\UsersResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Traits\UploadTrait;
 use URL;
 
 class UsersAPIController extends Controller
@@ -61,9 +65,9 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return new UsersResource($user->load([]));
     }
 
     /**
@@ -99,4 +103,8 @@ class UsersAPIController extends Controller
     {
         //
     }
+    public function batchRequest(Request $requestObj)
+    {
+        return $requestObj;
+    }    
 }

@@ -23,8 +23,10 @@ class UsersRequest extends FormRequest
      *
      * @return array
      */
+    
     public function rules()
     {
+
         return [
             
             'name' => 'required | regex:/^[a-zA-Z_ ]*$/ | max:255',
