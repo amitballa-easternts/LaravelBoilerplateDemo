@@ -33,16 +33,16 @@ class LoginController extends Controller
             return response()->json(['error' => config('constants.messages.login.unverified_account')],config('constants.validation_codes.unprocessable_entity'));
         }
 
-        //$tokenResult = $user->createToken('Personal Access Token');
-        //$token = $tokenResult->token;
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
 
         if($user != null){
             //get User Permission and save permission in token
-/*             $token->scopes = $user->role->permissions->pluck('name')->toArray();
+            $token->scopes = $user->role->permissions->pluck('name')->toArray();
             $token->save();
             $role = Role::findorfail($user->role_id);//get role details
             $user->permissions = Permission::getPermissions($role,$isSubscription = true);
-            $user->authorization = $tokenResult->accessToken; */
+            $user->authorization = $tokenResult->accessToken;
             return new LoginResource($user);
         }else{
             return response("No User found.", config('constants.validation_codes.unprocessable_entity') );
