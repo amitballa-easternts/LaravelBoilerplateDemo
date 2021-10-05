@@ -1,36 +1,33 @@
 <?php
+
 namespace App\Http\Controllers\API\User;
-use App\Exports\User\UsersExport;
+
+use App\Exports\User\CitiesExport;
 use App\Http\Resources\DataTrueResource;
-use App\Imports\User\UsersImport;
+use App\Imports\User\CitiesImport;
 use App\User;
-use App\Models\User\UserGallery;
-use App\Http\Requests\User\UsersRequest;
-use App\Http\Resources\User\UsersCollection;
-use App\Http\Resources\User\UsersResource;
+use App\Models\User\City;
+use App\Http\Requests\User\CitiesRequest;
+use App\Http\Resources\User\CitiesCollection;
+use App\Http\Resources\User\CitiesResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Traits\UploadTrait;
-use URL;
 
-class UsersAPIController extends Controller
+class CitiesAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+         $query = City::All();
+        return new CitiesCollection(CitiesResource::collection($query),CitiesResource::class);
     }
-    public function register(UsersRequest $request)
-    {
-        return User::Register($request);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -47,9 +44,11 @@ class UsersAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CitiesRequest $request)
     {
         //
+         new CitiesResource(City::create($request->all()));
+        return response()->json(['success' => config('constants.messages.success')]);
     }
 
     /**
@@ -81,9 +80,13 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UsersRequest $request, User $user)
+    public function update(CitiesRequest $request, City $city)
     {
-        return User::UpdateUser($request,$user);
+        //
+     
+        $city->update($request->all());
+
+        return new CitiesResource($city);       
     }
 
     /**
@@ -92,21 +95,15 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, City $city)
     {
-        return dd($user);
-/*         $user->hobbies()->detach();
+        $city->delete();
 
-        Storage::deleteDirectory('/public/user/' . $user->id);
-        UserGallery::where('user_id', $user->id)->delete();
-
-        Storage::deleteDirectory('/public/user/' . $user->id);
-        $user->delete();
-
-        return new DataTrueResource($user); */
+        return new DataTrueResource($city);
     }
-   public function deleteAll(Request $request)
+    public function deleteAll(Request $request)
     {
-        return User::deleteAll($request);
+        return City::deleteAll($request);
     }
+
 }

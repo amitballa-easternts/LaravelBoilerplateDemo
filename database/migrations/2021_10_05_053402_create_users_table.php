@@ -22,16 +22,16 @@ class CreateUsersTable extends Migration
             $table->string('password',255)->nullable();
             $table->string('mobile_no',255)->nullable();
            // $table->unsignedInteger('role_id')->index()->nullable()->comment('roles table id');;
-            //$table->foreign('role_id')->references('id')->on('roles');
+           // $table->foreign('role_id')->references('id')->on('roles');
             $table->string('profile',255)->nullable();
             $table->enum('gender',['0', '1'])->nullable()->index()->comment('0 - Female, 1 - Male');
             $table->date('dob')->nullable();
-           // $table->unsignedInteger('country_id')->index()->nullable()->comment('countries table id');
-            //$table->foreign('country_id')->references('id')->on('countries');
-           // $table->unsignedInteger('state_id')->index()->nullable()->comment('states table id');
-            //$table->foreign('state_id')->references('id')->on('states');
-            //$table->unsignedInteger('city_id')->index()->nullable()->comment('cities table id');
-            //$table->foreign('city_id')->references('id')->on('cities');
+            $table->unsignedInteger('country_id')->index()->nullable()->comment('countries table id');
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->unsignedInteger('state_id')->index()->nullable()->comment('states table id');
+            $table->foreign('state_id')->references('id')->on('states');
+            $table->unsignedInteger('city_id')->index()->nullable()->comment('cities table id');
+            $table->foreign('city_id')->references('id')->on('cities');
             $table->string('address',500)->nullable();
             $table->enum('status', ['0', '1'])->index()->comment('0 - Inactive, 1 - Active');
             $table->timestamp('email_verified_at')->nullable();
@@ -49,9 +49,9 @@ class CreateUsersTable extends Migration
                 'mobile_no'=>'1234567890',
                 //'role_id'=>'1',
                 'status'=>'1',
-/*                 'email_verified_at'=> config('constants.calender.date_time'),
+                'email_verified_at'=> config('constants.calender.date_time'),
                 'created_at' => config('constants.calender.date_time'),
-                'updated_at' => config('constants.calender.date_time') */
+                'updated_at' => config('constants.calender.date_time')
             ),
 
             array(
@@ -61,9 +61,9 @@ class CreateUsersTable extends Migration
                 'mobile_no'=>'1234567890',
                 //'role_id'=>'1',
                 'status'=>'0',
-/*                 'email_verified_at'=> Null,
+                'email_verified_at'=> Null,
                 'created_at' => config('constants.calender.date_time'),
-                'updated_at' => config('constants.calender.date_time') */
+                'updated_at' => config('constants.calender.date_time')
             ),
 
             array(
@@ -73,9 +73,9 @@ class CreateUsersTable extends Migration
                 'mobile_no'=>'1234567890',
                 //'role_id'=>'1',
                 'status'=>'0',
-/*                 'email_verified_at'=> Null,
+                'email_verified_at'=> Null,
                 'created_at' => config('constants.calender.date_time'),
-                'updated_at' => config('constants.calender.date_time') */
+                'updated_at' => config('constants.calender.date_time')
             )
         ));
     }

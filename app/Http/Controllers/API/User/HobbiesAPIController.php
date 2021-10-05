@@ -1,22 +1,20 @@
 <?php
+
 namespace App\Http\Controllers\API\User;
-use App\Exports\User\UsersExport;
+
+use App\Exports\User\HobbiesExport;
 use App\Http\Resources\DataTrueResource;
-use App\Imports\User\UsersImport;
+use App\Imports\User\HobbiesImport;
 use App\User;
-use App\Models\User\UserGallery;
-use App\Http\Requests\User\UsersRequest;
-use App\Http\Resources\User\UsersCollection;
-use App\Http\Resources\User\UsersResource;
+use App\Models\User\Hobby;
+use App\Http\Requests\User\HobbiesRequest;
+use App\Http\Resources\User\HobbiesCollection;
+use App\Http\Resources\User\HobbiesResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Traits\UploadTrait;
-use URL;
 
-class UsersAPIController extends Controller
+class HobbiesAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,10 +25,7 @@ class UsersAPIController extends Controller
     {
         //
     }
-    public function register(UsersRequest $request)
-    {
-        return User::Register($request);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -47,9 +42,10 @@ class UsersAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HobbiesRequest $request)
     {
-        //
+        //return $request;
+        return new HobbiesResource(Hobby::create($request->all()));
     }
 
     /**
@@ -81,9 +77,11 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UsersRequest $request, User $user)
+    public function update(HobbiesRequest $request, Hobby $hobby)
     {
-        return User::UpdateUser($request,$user);
+        $hobby->update($request->all());
+
+        return new HobbiesResource($hobby);
     }
 
     /**
@@ -92,21 +90,15 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, Hobby $hobby)
     {
-        return dd($user);
-/*         $user->hobbies()->detach();
+        $hobby->delete();
 
-        Storage::deleteDirectory('/public/user/' . $user->id);
-        UserGallery::where('user_id', $user->id)->delete();
-
-        Storage::deleteDirectory('/public/user/' . $user->id);
-        $user->delete();
-
-        return new DataTrueResource($user); */
+        return new DataTrueResource($hobby);
     }
-   public function deleteAll(Request $request)
+
+    public function deleteAll(Request $request)
     {
-        return User::deleteAll($request);
+        return Hobby::deleteAll($request);
     }
 }
