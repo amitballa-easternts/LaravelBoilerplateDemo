@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Country extends Model
 {
-   
+    use SoftDeletes, Scopes,CreatedbyUpdatedby;
     /**
      * The attributes that are mass assignable.
      *

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class City extends Model
 {
-    //use SoftDeletes, Scopes,CreatedbyUpdatedby;
+    use SoftDeletes, Scopes,CreatedbyUpdatedby;
 
     /**
      * @var array

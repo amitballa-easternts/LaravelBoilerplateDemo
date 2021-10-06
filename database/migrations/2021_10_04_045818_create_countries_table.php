@@ -13,6 +13,7 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('countries', function (Blueprint $table) {
             $table->increments('id')->index()->comment('AUTO_INCREMENT');
             $table->string('name',255)->nullable();

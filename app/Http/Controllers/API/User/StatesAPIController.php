@@ -24,9 +24,9 @@ class StatesAPIController extends Controller
     public function index(Request $request)
     {
         //return $request;
-        return $query = State::All();
-      /*   $query = User::commonFunctionMethod(State::class,$request);
-        return new StatesCollection(StatesResource::collection($query),StatesResource::class); */
+        //return $query = State::All();
+        $query = User::commonFunctionMethod(State::class,$request);
+        return new StatesCollection(StatesResource::collection($query),StatesResource::class);
     }
 
     /**
@@ -57,9 +57,9 @@ class StatesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(State $state)
     {
-        //
+        return new StatesResource($state->load([]));
     }
 
     /**
@@ -86,7 +86,7 @@ class StatesAPIController extends Controller
 
         return new StatesResource($state);
     }
-
+ 
     /**
      * Remove the specified resource from storage.
      *
@@ -105,5 +105,9 @@ class StatesAPIController extends Controller
     public function deleteAll(Request $request)
     {
         return $request;
+    }
+    public function export(Request $request)
+    {
+        return Excel::download(new StatesExport($request), 'state.csv');
     }
 }

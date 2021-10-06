@@ -21,13 +21,13 @@ class CountriesAPIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+     
     public function index(Request $request)
     {
         //return $request; 
-        return $query = Country::All();
-/*         $query = User::commonFunctionMethod(Country::class,$request);
-        return new CountriesCollection(CountriesResource::collection($query),CountriesResource::class); */
+        //return $query = Country::All();
+        $query = User::commonFunctionMethod(Country::class,$request);
+        return new CountriesCollection(CountriesResource::collection($query),CountriesResource::class);
     }
     
 
@@ -60,9 +60,9 @@ class CountriesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Country $country)
     {
-        //
+        return new CountriesResource($country->load([]));
     }
 
     /**
@@ -108,5 +108,8 @@ class CountriesAPIController extends Controller
     {
         return Country::deleteAll($request);
     }
-
+    public function export(Request $request)
+    {
+        return Excel::download(new CountriesExport($request), 'country.csv');
+    }
 }

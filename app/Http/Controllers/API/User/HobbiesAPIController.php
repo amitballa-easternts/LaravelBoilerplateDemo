@@ -21,9 +21,10 @@ class HobbiesAPIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = User::commonFunctionMethod(Hobby::class,$request);
+        return new HobbiesCollection(HobbiesResource::collection($query),HobbiesResource::class);
     }
 
     /**
@@ -44,7 +45,7 @@ class HobbiesAPIController extends Controller
      */
     public function store(HobbiesRequest $request)
     {
-        //return $request;
+        
         return new HobbiesResource(Hobby::create($request->all()));
     }
 
@@ -54,9 +55,9 @@ class HobbiesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Hobby $hobby)
     {
-        //
+        return new HobbiesResource($hobby->load([]));
     }
 
     /**
@@ -100,5 +101,9 @@ class HobbiesAPIController extends Controller
     public function deleteAll(Request $request)
     {
         return Hobby::deleteAll($request);
+    }
+    public function export(Request $request)
+    {
+        return Excel::download(new HobbiesExport($request), 'hobby.csv');
     }
 }

@@ -24,8 +24,9 @@ class CitiesAPIController extends Controller
     public function index(Request $request)
     {
         //
-         $query = City::All();
-        return new CitiesCollection(CitiesResource::collection($query),CitiesResource::class);
+         //$query = City::All();
+         $query = User::commonFunctionMethod(City::class,$request);
+         return new CitiesCollection(CitiesResource::collection($query),CitiesResource::class);
     }
 
     /**
@@ -57,9 +58,10 @@ class CitiesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(City $city)
     {
-        //
+        
+        return new CitiesResource($city->load([]));
     }
 
     /**
@@ -105,5 +107,8 @@ class CitiesAPIController extends Controller
     {
         return City::deleteAll($request);
     }
-
+    public function export(Request $request)
+    {
+        return Excel::download(new CitiesExport($request), 'city.csv');
+    }
 }

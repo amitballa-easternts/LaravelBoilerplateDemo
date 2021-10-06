@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class State extends Model
 {
-    //use SoftDeletes, Scopes,CreatedbyUpdatedby;
+    use SoftDeletes, Scopes,CreatedbyUpdatedby;
     /**
      * The attributes that are mass assignable.
      *

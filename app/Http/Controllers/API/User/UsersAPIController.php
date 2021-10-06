@@ -23,9 +23,10 @@ class UsersAPIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = User::commonFunctionMethod(User::class,$request);
+        return new UsersCollection(UsersResource::collection($query),UsersResource::class);
     }
     public function register(UsersRequest $request)
     {
@@ -58,9 +59,9 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -92,10 +93,10 @@ class UsersAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request,User $user)
     {
-        return dd($user);
-/*         $user->hobbies()->detach();
+        //return dd($id);
+        $user->hobbies()->detach();
 
         Storage::deleteDirectory('/public/user/' . $user->id);
         UserGallery::where('user_id', $user->id)->delete();
@@ -103,10 +104,14 @@ class UsersAPIController extends Controller
         Storage::deleteDirectory('/public/user/' . $user->id);
         $user->delete();
 
-        return new DataTrueResource($user); */
+        return new DataTrueResource($user);
     }
    public function deleteAll(Request $request)
     {
         return User::deleteAll($request);
+    }
+    public function export(Request $request)
+    {
+        return Excel::download(new UsersExport($request), 'user.csv');
     }
 }
