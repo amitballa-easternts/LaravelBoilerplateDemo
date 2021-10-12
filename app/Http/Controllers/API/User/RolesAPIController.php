@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\API\User;
 
-use App\Exports\User\HobbiesExport;
-use App\Http\Resources\DataTrueResource;
-use App\Imports\User\HobbiesImport;
+use App\Models\User\Role;
+use App\Models\User\Permission;
 use App\Models\User;
-use App\Models\User\Hobby;
-use App\Http\Requests\User\HobbiesRequest;
-use App\Http\Resources\User\HobbiesCollection;
-use App\Http\Resources\User\HobbiesResource;
+use App\Http\Requests\User\RolesRequest;
+use App\Http\Resources\User\RolesCollection;
+use App\Http\Resources\User\RolesResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\DataTrueResource;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\User\RolesExport;
 
-class HobbiesAPIController extends Controller
+class RolesAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +23,8 @@ class HobbiesAPIController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::commonFunctionMethod(Hobby::class,$request);
-        return new HobbiesCollection(HobbiesResource::collection($query),HobbiesResource::class);
+        $query = User::commonFunctionMethod(Role::class,$request);
+        return new RolesCollection(RolesResource::collection($query),RolesResource::class);
     }
 
     /**
@@ -43,10 +43,10 @@ class HobbiesAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(HobbiesRequest $request)
+    public function store(RolesRequest $request)
     {
-        
-        return new HobbiesResource(Hobby::create($request->all()));
+         new RolesResource(Role::create($request->all()));
+         return response()->json(['success' => config('constants.messages.success')]);
     }
 
     /**
@@ -55,9 +55,9 @@ class HobbiesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Hobby $hobby)
+    public function show(Role $role)
     {
-        return new HobbiesResource($hobby->load([]));
+        return new RolesResource($role->load([]));
     }
 
     /**
@@ -78,11 +78,11 @@ class HobbiesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(HobbiesRequest $request, Hobby $hobby)
+    public function update(RolesRequest $request, Role $role)
     {
-        $hobby->update($request->all());
+        $role->update($request->all());
 
-        return new HobbiesResource($hobby);
+        return new RolesResource($role);
     }
 
     /**
@@ -91,19 +91,24 @@ class HobbiesAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Hobby $hobby)
+    public function destroy(Request $request, Role $role)
     {
-        $hobby->delete();
-
-        return new DataTrueResource($hobby);
+        $role->delete();
+        return new DataTrueResource($role);
     }
-
     public function deleteAll(Request $request)
     {
-        return Hobby::deleteAll($request);
+        return Role::deleteAll($request);
     }
+    
     public function export(Request $request)
     {
-        return Excel::download(new HobbiesExport($request), 'hobby.csv');
+        return Excel::download(new RolesExport($request), 'role.csv');
+    }
+    public function getPermissionsByRole(Request $request)
+    {
+        $role = Role::findorfail($request->id);//get role details
+        $allPermission = Permission::getPermissions($role);
+        return response()->json(['data' => $allPermission]);
     }
 }

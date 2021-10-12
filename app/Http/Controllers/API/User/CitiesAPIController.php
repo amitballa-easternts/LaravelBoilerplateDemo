@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\User;
 use App\Exports\User\CitiesExport;
 use App\Http\Resources\DataTrueResource;
 use App\Imports\User\CitiesImport;
-use App\User;
+use App\Models\User;
 use App\Models\User\City;
 use App\Http\Requests\User\CitiesRequest;
 use App\Http\Resources\User\CitiesCollection;

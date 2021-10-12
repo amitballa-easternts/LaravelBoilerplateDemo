@@ -54,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function scopeRegister($query,$request){
+        //return dd($request);
          $data = $request->all(); 
          $data['password'] = bcrypt($data['password']);
          $user = User::create($data);
@@ -73,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-
+        $user->sendEmailVerificationNotification();
         return response()->json(['success' => config('constants.messages.success')], config('constants.validation_codes.ok'));
     }
 
@@ -122,5 +123,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hobbies() {
         return $this->belongsToMany(Hobby::class,"user_hobbies","user_id","hobby_id");
     }
-
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

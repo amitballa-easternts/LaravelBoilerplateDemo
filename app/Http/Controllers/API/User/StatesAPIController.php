@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\User;
 use App\Exports\User\StatesExport;
 use App\Http\Resources\DataTrueResource;
 use App\Imports\User\StatesImport;
-use App\User;
+use App\Models\User;
 use App\Models\User\State;
 use App\Http\Requests\User\StatesRequest;
 use App\Http\Resources\User\StatesCollection;

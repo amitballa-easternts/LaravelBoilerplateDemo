@@ -4,6 +4,11 @@ use Carbon\Carbon;
 
 return [
 
+    'system_user_id'=>1,
+    'system_role_id'=>1,
+    'max_user_gallery'=>5,
+    'token_expiry' => env('TOKEN_EXPIRY',(60 * 60 * 24)),
+
     'calender' => [
         'date' => Carbon::now()->toDateString(),
         'date_format' => Carbon::now()->format('Y-m-d'),

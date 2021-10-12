@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Requests\User;
 
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest  
+class SetUnsetPermissionToRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +24,12 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|max:255',
-            'password' => 'required|min:6|max:255',
+            'role_id' => 'required|exists:roles,id,deleted_at,NULL',
+            'permission_id' => 'required|exists:permissions,id,deleted_at,NULL',
+/*             'is_permission' => [
+                'required',
+                Rule::in([0,1])
+            ], */
         ];
     }
 }

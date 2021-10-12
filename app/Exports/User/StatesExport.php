@@ -3,7 +3,7 @@
 namespace App\Exports\User;
 
 use App\Models\User\State;
-use App\User;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\DB;

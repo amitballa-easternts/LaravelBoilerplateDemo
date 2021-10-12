@@ -4,7 +4,7 @@ namespace App\Exports\User;
 
 use App\Models\User\Hobby;
 //use Laravel\Passport\Bridge\User;
-use App\User;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 

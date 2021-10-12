@@ -2,13 +2,13 @@
 
 namespace App\Exports\User;
 
-use App\Models\User\City;
+use App\Models\User\Role;
 use App\Models\User;
+
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Support\Facades\DB;
 
-class CitiesExport implements FromCollection, WithHeadings
+class RolesExport implements FromCollection, WithHeadings
 {
     protected $request;
 
@@ -22,10 +22,11 @@ class CitiesExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        return  User::commonFunctionMethod(City::select(
+        return  User::commonFunctionMethod(Role::select(
             'id',
-            DB::raw('(SELECT name from states WHERE id = cities.state_id) AS state_name'),
-            'name'),
+            'name',
+            'guard_name',
+            'landing_page'),
             $this->request, true, null, null, true);
     }
 
@@ -33,8 +34,9 @@ class CitiesExport implements FromCollection, WithHeadings
     {
         return[
             'ID',
-            'State Name',
-            'City Name'
+            'Name',
+            'Guard Name',
+            'Landing Page'
         ];
     }
 }

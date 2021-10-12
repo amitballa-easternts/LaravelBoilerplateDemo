@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\User;
 use App\Exports\User\CountriesExport;
 use App\Http\Resources\DataTrueResource;
 use App\Imports\User\CountriesImport;
-use App\User;
+use App\Models\User;
 use App\Models\User\Country;
 use App\Http\Requests\User\CountriesRequest;
 use App\Http\Resources\User\CountriesCollection;
