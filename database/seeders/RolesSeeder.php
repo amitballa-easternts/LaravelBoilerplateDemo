@@ -10,8 +10,9 @@ class RolesSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
-//        factory(Role::class, 10)->create();
+       factory(Role::class, 10)->create();
     }
 }
