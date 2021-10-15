@@ -1,13 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+
 Route::group(['prefix' => 'v1', 'namespace' => 'API',], function () {
 
         Route::group(['namespace' => 'User',], function () {
 
                 Route::get('email/verify/{id}', 'VerificationAPIController@verify')->name('verification.verify');
                 Route::get('email/resend', 'VerificationAPIController@resend')->name('verification.resend');
-                Route::post('forgot-passsword','ForgotPasswordAPIController@sendResetLinkEmail');
-                
+                Route::post('forgot-passsword', 'ForgotPasswordAPIController@sendResetLinkEmail');
+
                 /*Starts Registration User*/
                 Route::post('register', 'UsersAPIController@register');
                 /*End Registration User  */
@@ -26,56 +29,45 @@ Route::group(['prefix' => 'v1', 'namespace' => 'API',], function () {
                 /* Start Login */
                 Route::post('login', 'LoginController@login');
                 /* End Login */
-                /* Start Roles */
 
-                /* End Roles */
-                /* Start Permission */
-
-                /* End Permission */
-           
-                Route::post('change-password','LoginController@changePassword');
+                Route::post('countries-import-bulk', 'CountriesAPIController@importBulk');
+                Route::post('change-password', 'LoginController@changePassword');
                 Route::group([
-                        'middleware' => ['auth:api','check.permission'],
-                ], function() {
+                        'middleware' => ['auth:api', 'check.permission'],
+                ], function () {
 
-
-                /* Start Permisssion User */
-                Route::post('users/{user}', 'UsersAPIController@update');
-                Route::post('users-delete/{user}', 'UsersAPIController@destroy');
-                Route::post('users-delete-multiple', 'UsersAPIController@deleteAll');
-                Route::get('users', 'UsersAPIController@index');
-                Route::apiResource('users', 'UsersAPIController');
-                Route::get('users-export', 'UsersAPIController@export');
-                /* End Permisssion User */
-                /*Start Permisssion Country */
-                Route::resource('countries', 'CountriesAPIController', [
-                        'only' => ['show', 'store', 'update', 'destroy']
-                ]);
-                Route::post('countries-delete-multiple', 'CountriesAPIController@deleteAll');
-                Route::get('countries-export', 'CountriesAPIController@export');
-                /*End Permisssion Country End */
-                /* Start Permission State */
-                Route::resource('states', 'StatesAPIController', [
-                        'only' => ['show', 'store', 'update', 'destroy']
-                ]);
-                Route::post('states-delete-multiple', 'StatesAPIController@deleteAll');
-                Route::get('states-export', 'StatesAPIController@export');
-                /* End Permission State */
-                /* Start Permisssion Cities */
-                Route::resource('cities', 'CitiesAPIController', [
-                        'only' => ['show', 'store', 'update', 'destroy']
-                ]);
-                Route::post('cities-delete-multiple', 'CitiesAPIController@deleteAll');
-                Route::get('cities-export', 'CitiesAPIController@export');
+                        /* Start Permisssion User */
+                        Route::post('users/{user}', 'UsersAPIController@update');
+                        Route::post('users-delete/{user}', 'UsersAPIController@destroy');
+                        Route::post('users-delete-multiple', 'UsersAPIController@deleteAll');
+                        Route::get('users', 'UsersAPIController@index');
+                        Route::apiResource('users', 'UsersAPIController');
+                        Route::get('users-export', 'UsersAPIController@export');
+                        /* End Permisssion User */
+                        /*Start Permisssion Country */
+                        Route::resource('countries', 'CountriesAPIController', [
+                                'only' => ['show', 'store', 'update', 'destroy']
+                        ]);
+                        Route::post('countries-delete-multiple', 'CountriesAPIController@deleteAll');
+                        Route::get('countries-export', 'CountriesAPIController@export');
+                        /*End Permisssion Country End */
+                        /* Start Permission State */
+                        Route::resource('states', 'StatesAPIController', [
+                                'only' => ['show', 'store', 'update', 'destroy']
+                        ]);
+                        Route::post('states-delete-multiple', 'StatesAPIController@deleteAll');
+                        Route::get('states-export', 'StatesAPIController@export');
+                        /* End Permission State */
+                        /* Start Permisssion Cities */
+                        Route::resource('cities', 'CitiesAPIController', [
+                                'only' => ['show', 'store', 'update', 'destroy']
+                        ]);
+                        Route::post('cities-delete-multiple', 'CitiesAPIController@deleteAll');
+                        Route::get('cities-export', 'CitiesAPIController@export');
                 });
                 /* End Permisssion Cities */
-                /* Start Permisssion Hobbies */
-                Route::resource('hobbies', 'HobbiesAPIController', [
-                        'only' => ['show', 'store', 'update', 'destroy']
-                ]);
-                Route::post('hobbies-delete-multiple', 'HobbiesAPIController@deleteAll');
-                Route::get('hobbies-export', 'HobbiesAPIController@export');
-                /* End Permisssion Hobbies */
+
+
                 /* Start Permisison  */
                 Route::apiResource('permissions', 'PermissionsAPIController');
                 Route::post('permissions-delete-multiple', 'PermissionsAPIController@deleteAll');
@@ -89,9 +81,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'API',], function () {
                 /* End Permission Roles */
                 /* Start Permission Logout */
                 Route::get('logout', 'LoginController@logout');
-                //Route::post('change-password','LoginController@changePassword');
-                /* End Permission Logout */   
-        });
 
-        
+                /* End Permission Logout */
+        });
 });

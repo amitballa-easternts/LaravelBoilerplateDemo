@@ -14,6 +14,15 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\User\PermissionsExport;
 
+/*
+   |--------------------------------------------------------------------------
+   | Permission Controller
+   |--------------------------------------------------------------------------
+   |
+   | This controller handles the Permissions of index, show, store, update, destroy, setUnsetPermissionToRole and Export Methods.
+   |
+   */
+
 class PermissionsAPIController extends Controller
 {
     /**
@@ -21,20 +30,11 @@ class PermissionsAPIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
-        $query = User::commonFunctionMethod(Permission::class,$request);
-        return new PermissionsCollection(PermissionsResource::collection($query),PermissionsResource::class);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $query = User::commonFunctionMethod(Permission::class, $request);
+        return new PermissionsCollection(PermissionsResource::collection($query), PermissionsResource::class);
     }
 
     /**
@@ -43,6 +43,7 @@ class PermissionsAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(PermissionsRequest $request)
     {
         return new PermissionsResource(Permission::create($request->all()));
@@ -54,21 +55,12 @@ class PermissionsAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function show(Permission $permission)
     {
         return new PermissionsResource($permission);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -77,6 +69,7 @@ class PermissionsAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(PermissionsRequest $request, Permission $permission)
     {
         $permission->update($request->all());
@@ -89,15 +82,31 @@ class PermissionsAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Request $request, Permission $permission)
     {
         $permission->delete();
         return new DataTrueResource($permission);
     }
+
+    /**
+     * Delete Permission multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
     public function deleteAll(Request $request)
     {
         return Permission::deleteAll($request);
     }
+
+    /**
+     * This method is used set/unset permission to role
+     *
+     * @param SetUnsetPermissionToRoleRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function setUnsetPermissionToRole(SetUnsetPermissionToRoleRequest $request)
     {
         return Permission::setUnsetPermission($request);

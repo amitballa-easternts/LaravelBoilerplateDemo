@@ -10,19 +10,20 @@ class UsersResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array
      */
+
     public function toArray($request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' =>$this->email,
-            'mobile_no' =>$this->mobile_no, 
+            'email' => $this->email,
+            'mobile_no' => $this->mobile_no,
             'role_id' => $this->role_id,
             //'profile' =>$this->profile,
             'gender' => $this->gender,
-            'gender_text' =>  config('constants.user.gender.'.$this->gender),
+            'gender_text' =>  config('constants.user.gender.' . $this->gender),
             'dob' => $this->dob,
             'country_id' => $this->country_id,
             'country' => $this->country,
@@ -39,6 +40,7 @@ class UsersResource extends JsonResource
             //'email_verified_at' =>$this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
-        ];       return parent::toArray($request);
+        ];
+        return parent::toArray($request);
     }
 }

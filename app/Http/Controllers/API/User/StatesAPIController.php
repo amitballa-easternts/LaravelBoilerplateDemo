@@ -14,98 +14,108 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
+/*
+   |--------------------------------------------------------------------------
+   | States Controller
+   |--------------------------------------------------------------------------
+   |
+   | This controller handles the Roles of
+       index,
+       show,
+       store,
+       update,
+       destroy,
+       export and
+       importBulk Methods.
+   |
+   */
+
 class StatesAPIController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * List States
+     * @param Request $request
+     * @return StatesCollection
      */
+
     public function index(Request $request)
     {
         //return $request;
         //return $query = State::All();
-        $query = User::commonFunctionMethod(State::class,$request);
-        return new StatesCollection(StatesResource::collection($query),StatesResource::class);
+        $query = User::commonFunctionMethod(State::class, $request);
+        return new StatesCollection(StatesResource::collection($query), StatesResource::class);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Add State
+     * @param StatesRequest $request
+     * @return StatesResource
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StatesRequest $request)
     {
-         //dd($request->all());
+        //dd($request->all());
         return new StatesResource(State::create($request->all()));
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * States Detail
+     * @param State $state
+     * @return StatesResource
      */
+
     public function show(State $state)
     {
         return new StatesResource($state->load([]));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update State
+     * @param StatesRequest $request
+     * @param State $state
+     * @return StatesResource
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(StatesRequest $request, State $state)
     {
         $state->update($request->all());
 
         return new StatesResource($state);
     }
- 
+
     /**
-     * Remove the specified resource from storage.
+     * Delete State
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param State $state
+     * @return DataTrueResource
+     * @throws \Exception
      */
+
     public function destroy(Request $request, State $state)
     {
-        //
-        //return $state;
         $state->delete();
 
         return new DataTrueResource($state);
-
     }
+
+    /**
+     * Delete State multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
     public function deleteAll(Request $request)
     {
         return $request;
     }
+
+    /**
+     * Export States Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+
     public function export(Request $request)
     {
         return Excel::download(new StatesExport($request), 'state.csv');

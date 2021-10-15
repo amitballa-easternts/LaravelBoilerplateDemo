@@ -13,6 +13,7 @@ class RolesSeeder extends Seeder
 
     public function run()
     {
-       factory(Role::class, 10)->create();
+//        factory(Role::class, 10)->create();
     }
+    
 }

@@ -14,70 +14,66 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
+/*
+   |--------------------------------------------------------------------------
+   | Hobbies Controller
+   |--------------------------------------------------------------------------
+   |
+   | This controller handles the Roles of
+       index,
+       show,
+       store,
+       update,
+       destroy,
+       export and
+       importBulk Methods.
+   |
+   */
+
 class HobbiesAPIController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Hobbies List
+     * @param Request $request
+     * @return HobbiesCollection
      */
+
     public function index(Request $request)
     {
-        $query = User::commonFunctionMethod(Hobby::class,$request);
-        return new HobbiesCollection(HobbiesResource::collection($query),HobbiesResource::class);
+        $query = User::commonFunctionMethod(Hobby::class, $request);
+        return new HobbiesCollection(HobbiesResource::collection($query), HobbiesResource::class);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Add Hobby
+     * @param HobbiesRequest $request
+     * @return HobbiesResource
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(HobbiesRequest $request)
     {
-        
+
         return new HobbiesResource(Hobby::create($request->all()));
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Hobby Detail
+     * @param Hobby $hobby
+     * @return HobbiesResource
      */
+
     public function show(Hobby $hobby)
     {
         return new HobbiesResource($hobby->load([]));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update Hobby
+     * @param HobbiesRequest $request
+     * @param Hobby $hobby
+     * @return HobbiesResource
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(HobbiesRequest $request, Hobby $hobby)
     {
         $hobby->update($request->all());
@@ -86,11 +82,14 @@ class HobbiesAPIController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Hobby
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Hobby $hobby
+     * @return DataTrueResource
+     * @throws \Exception
      */
+
     public function destroy(Request $request, Hobby $hobby)
     {
         $hobby->delete();
@@ -98,10 +97,23 @@ class HobbiesAPIController extends Controller
         return new DataTrueResource($hobby);
     }
 
+    /**
+     * Delete Hobby multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
     public function deleteAll(Request $request)
     {
         return Hobby::deleteAll($request);
     }
+
+    /**
+     * Export Hobbies Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+
     public function export(Request $request)
     {
         return Excel::download(new HobbiesExport($request), 'hobby.csv');

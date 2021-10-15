@@ -14,99 +14,105 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
+/*
+   |--------------------------------------------------------------------------
+   | Cities Controller
+   |--------------------------------------------------------------------------
+   |
+   | This controller handles the Roles of
+     index,
+     show,
+     store,
+     update,
+     destroy,
+     export and
+     importBulk Methods.
+   |
+   */
+
 class CitiesAPIController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * list Cities
+     * @param Request $request
+     * @return CitiesCollection
      */
+
     public function index(Request $request)
     {
-        //
-         //$query = City::All();
-         $query = User::commonFunctionMethod(City::class,$request);
-         return new CitiesCollection(CitiesResource::collection($query),CitiesResource::class);
+        $query = User::commonFunctionMethod(City::class, $request);
+        return new CitiesCollection(CitiesResource::collection($query), CitiesResource::class);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * add City
+     * @param CitiesRequest $request
+     * @return CitiesResource
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(CitiesRequest $request)
     {
-        //
-         new CitiesResource(City::create($request->all()));
+        new CitiesResource(City::create($request->all()));
         return response()->json(['success' => config('constants.messages.success')]);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * City Detail
+     * @param City $city
+     * @return CitiesResource
      */
+
     public function show(City $city)
     {
-        
         return new CitiesResource($city->load([]));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update City
+     * @param CitiesRequest $request
+     * @param City $city
+     * @return CitiesResource
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(CitiesRequest $request, City $city)
     {
-        //
-     
         $city->update($request->all());
-
-        return new CitiesResource($city);       
+        return new CitiesResource($city);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete City
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param City $city
+     * @return DataTrueResource
+     * @throws \Exception
      */
+
     public function destroy(Request $request, City $city)
     {
         $city->delete();
 
         return new DataTrueResource($city);
     }
+
+    /**
+     * Delete City multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
     public function deleteAll(Request $request)
     {
         return City::deleteAll($request);
     }
+
+    /**
+     * Export City Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+
     public function export(Request $request)
     {
         return Excel::download(new CitiesExport($request), 'city.csv');

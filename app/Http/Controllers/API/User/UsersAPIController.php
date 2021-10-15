@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\API\User;
+
 use App\Exports\User\UsersExport;
 use App\Http\Resources\DataTrueResource;
 use App\Imports\User\UsersImport;
@@ -16,84 +18,78 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Traits\UploadTrait;
 use URL;
 
+/*
+ |--------------------------------------------------------------------------
+ | Users Controller
+ |--------------------------------------------------------------------------
+ |
+ | This controller handles the Roles of
+     register,
+     index,
+     show,
+     store,
+     update,
+     destroy,
+     export Methods.
+ |
+ */
+
 class UsersAPIController extends Controller
 {
+    use UploadTrait;
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * List All Users
+     * @param Request $request
+     * @return UsersCollection
      */
     public function index(Request $request)
     {
-        $query = User::commonFunctionMethod(User::class,$request);
-        return new UsersCollection(UsersResource::collection($query),UsersResource::class);
+        $query = User::commonFunctionMethod(User::class, $request);
+        return new UsersCollection(UsersResource::collection($query), UsersResource::class);
     }
+    /***
+     * Register New User
+     * @param UsersRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(UsersRequest $request)
     {
         return User::Register($request);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Users detail
+     * @param User $user
+     * @return UsersResource
      */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(User $user)
     {
-        return $user;
+        return new UsersResource($user->load([]));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update Users
+     * @param UsersRequest $request
+     * @param User $user
+     * @return UsersResource
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(UsersRequest $request, User $user)
     {
-        return User::UpdateUser($request,$user);
+        return User::UpdateUser($request, $user);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete User
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param User $user
+     * @return DataTrueResource
+     * @throws \Exception
      */
-    public function destroy(Request $request,User $user)
+
+    public function destroy(Request $request, User $user)
     {
         //return dd($id);
         $user->hobbies()->detach();
@@ -106,10 +102,24 @@ class UsersAPIController extends Controller
 
         return new DataTrueResource($user);
     }
-   public function deleteAll(Request $request)
+
+    /**
+     * Delete User multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
+    public function deleteAll(Request $request)
     {
         return User::deleteAll($request);
     }
+
+    /**
+     * Export Users Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+
     public function export(Request $request)
     {
         return Excel::download(new UsersExport($request), 'user.csv');

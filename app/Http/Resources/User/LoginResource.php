@@ -10,20 +10,21 @@ class LoginResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array
      */
+
     public function toArray($request)
     {
         return [
             'authorization' => $this->authorization,
             'id' => $this->id,
             'name' => $this->name,
-            'email' =>$this->email,
-            'mobile_no' =>$this->mobile_no,
+            'email' => $this->email,
+            'mobile_no' => $this->mobile_no,
             'role_id' => $this->role_id,
-            'profile' =>$this->profile,
+            'profile' => $this->profile,
             'gender' => $this->gender,
-            'gender_text' =>  config('constants.user.gender.'.$this->gender),
+            'gender_text' =>  config('constants.user.gender.' . $this->gender),
             'dob' => $this->dob,
             'country_id' => $this->country_id,
             'country' => $this->country,
@@ -33,18 +34,18 @@ class LoginResource extends JsonResource
             'city' => $this->city,
             'address' => $this->address,
             'status' => $this->status,
-            'status_text' => config('constants.user.status.'.$this->status),
+            'status_text' => config('constants.user.status.' . $this->status),
             'gallery' => $this->user_galleries,
             'hobby' => $this->hobbies,
             'role' => $this->role,
-            'permissions' => $this->permissions,           
-/*             'samples_excels'=>array([
+            'permissions' => $this->permissions,
+            /*             'samples_excels'=>array([
                 'sample_user' => url(config('constants.sample_dir_path.sample_users')),
                 'sample_city' => url(config('constants.sample_dir_path.sample_cities')),
                 'sample_hobby' => url(config('constants.sample_dir_path.sample_hobbies')),
                 'sample_country' => url(config('constants.sample_dir_path.sample_countries')),
                 'sample_state' => url(config('constants.sample_dir_path.sample_states'))]),*/
-            'email_verified_at' =>$this->email_verified_at,
+            'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

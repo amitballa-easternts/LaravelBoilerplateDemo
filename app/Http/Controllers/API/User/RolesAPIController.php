@@ -14,70 +14,67 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\User\RolesExport;
 
+/*
+   |--------------------------------------------------------------------------
+   | Roles Controller
+   |--------------------------------------------------------------------------
+   |
+   | This controller handles the Roles of
+     index,
+     show,
+     store,
+     update,
+     destroy,
+     export and
+     getPermissionsByRole Methods.
+   |
+   */
+
 class RolesAPIController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Roles List
+     * @param Request $request
+     * @return RolesCollection
+     * @return RolesResource
      */
+
     public function index(Request $request)
     {
-        $query = User::commonFunctionMethod(Role::class,$request);
-        return new RolesCollection(RolesResource::collection($query),RolesResource::class);
+        $query = User::commonFunctionMethod(Role::class, $request);
+        return new RolesCollection(RolesResource::collection($query), RolesResource::class);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Create a new Role instance after a valid Role.
+     * @param RolesRequest $request
+     * @return RolesResource
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(RolesRequest $request)
     {
-         new RolesResource(Role::create($request->all()));
-         return response()->json(['success' => config('constants.messages.success')]);
+        new RolesResource(Role::create($request->all()));
+        return response()->json(['success' => config('constants.messages.success')]);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Role Detail
+     * @param Role $role
+     * @return RolesResource
      */
+
     public function show(Role $role)
     {
         return new RolesResource($role->load([]));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update Role
+     * @param RolesRequest $request
+     * @param Role $role
+     * @return RolesResource
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(RolesRequest $request, Role $role)
     {
         $role->update($request->all());
@@ -86,28 +83,49 @@ class RolesAPIController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Delete Role
+     * @param Request $request
+     * @param Role $role
+     * @return DataTrueResource
      */
+
     public function destroy(Request $request, Role $role)
     {
         $role->delete();
         return new DataTrueResource($role);
     }
+
+    /**
+     * Delete Role multiple
+     * @param Request $request
+     * @return DataTrueResource
+     */
+
     public function deleteAll(Request $request)
     {
         return Role::deleteAll($request);
     }
-    
+
+    /**
+     * Export Roles Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+
     public function export(Request $request)
     {
         return Excel::download(new RolesExport($request), 'role.csv');
     }
+
+    /**
+     * Role Detail
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function getPermissionsByRole(Request $request)
     {
-        $role = Role::findorfail($request->id);//get role details
+        $role = Role::findorfail($request->id); //get role details
         $allPermission = Permission::getPermissions($role);
         return response()->json(['data' => $allPermission]);
     }
