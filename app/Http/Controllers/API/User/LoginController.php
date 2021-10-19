@@ -78,6 +78,7 @@ class LoginController extends Controller
 
     public function changePassword(ChangePasswordRequest $request)
     {
+        dd($request);
         //get all updated data.
         $data = $request->all();
 

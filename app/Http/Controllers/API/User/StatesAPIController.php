@@ -107,7 +107,7 @@ class StatesAPIController extends Controller
 
     public function deleteAll(Request $request)
     {
-        return $request;
+        return State::deleteAll($request);
     }
 
     /**
@@ -119,5 +119,14 @@ class StatesAPIController extends Controller
     public function export(Request $request)
     {
         return Excel::download(new StatesExport($request), 'state.csv');
+    }
+    /**
+     * Import bulk
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function importBulk(Request $request)
+    {
+        return User::importBulk($request, new StatesImport(), config('constants.models.state_model'), config('constants.import_dir_path.state_dir_path'));
     }
 }

@@ -114,12 +114,26 @@ class UsersAPIController extends Controller
         return User::deleteAll($request);
     }
 
+
+    /**
+     * Delete gallery
+     * @param Request $request
+     * @param UserGallery $gallery
+     * @return DataTrueResource
+     * @throws \Exception
+     */
+    public function delete_gallery(Request $request, UserGallery $gallery)
+    {
+        $this->deleteOne('/public/user/' . $gallery->user_id . '/' . basename($gallery->filename));
+        $gallery->delete();
+
+        return new DataTrueResource($gallery);
+    }
     /**
      * Export Users Data
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-
     public function export(Request $request)
     {
         return Excel::download(new UsersExport($request), 'user.csv');

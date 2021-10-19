@@ -27,11 +27,13 @@ class ChangePasswordRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+
+        //return $requests;
         return [
             'old_password' => ['required', function ($attribute, $value, $fail) {
-               // $value1='$2y$10$rqG6J.r.aenCRlzr38eQ6eli1PRYLqmABAKwxU1Zje9rvPcKT9ulu';
-                if (! Hash::check($value,Auth::user()->password)) {
-                   
+                // $value1='$2y$10$rqG6J.r.aenCRlzr38eQ6eli1PRYLqmABAKwxU1Zje9rvPcKT9ulu';
+                if (!\Hash::check($value, Auth::user()->password)) {
+
                     return $fail(__('The Old password is incorrect.'));
                 }
             }],
@@ -40,4 +42,3 @@ class ChangePasswordRequest extends FormRequest
         ];
     }
 }
-

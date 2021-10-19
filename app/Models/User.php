@@ -46,6 +46,9 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->withPerPage($request->get('per_page'));
         }
     }
+    /**
+     * @var array
+     */
     protected $fillable = [
         'id', 'name', 'email', 'password', 'mobile_no', 'role_id', 'profile', 'gender', 'dob', 'address', 'country_id', 'state_id', 'city_id', 'status', 'remember_token'
     ];
@@ -55,15 +58,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public $sortable = [
         'id', 'name', 'email', 'mobile_no', 'gender', 'dob', 'address'
     ];
-
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     public $foreign_sortable = [
         'country_id', 'state_id', 'city_id'
     ];
-
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     public $foreign_table = [
         'countries', 'states', 'cities'
     ];
-
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     public $foreign_key = [
         'name', 'name', 'name'
     ];
@@ -76,11 +91,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
+
     protected $dates = ['email_verified_at', 'created_at', 'updated_at'];
 
     /**
@@ -117,6 +128,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'created_at' => 'string',
         'updated_at' => 'string',
     ];
+    /**
+     * @param $value
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
     public function getProfileAttribute($value)
     {
         if ($value == NULL)
@@ -149,7 +164,13 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->sendEmailVerificationNotification();
         return response()->json(['success' => config('constants.messages.success')], config('constants.validation_codes.ok'));
     }
-
+    /**
+     * update User
+     * @param $query
+     * @param $request
+     * @param $user
+     * @return UsersResource
+     */
     public function scopeUpdateUser($query, $request, $user)
     {
         $data = $request->all();
@@ -175,6 +196,12 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->update($data);
         return new UsersResource($user);
     }
+    /**
+     * Multiple Delete
+     * @param $query
+     * @param $request
+     * @return DataTrueResource|\Illuminate\Http\JsonResponse
+     */
     public function scopeDeleteAll($query, $request)
     {
         if (!empty($request->id)) {
@@ -185,22 +212,37 @@ class User extends Authenticatable implements MustVerifyEmail
             return response()->json(['error' => config('constants.messages.delete_multiple_error')], config('constants.validation_codes.422'));
         }
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function country()
     {
         return $this->belongsTo(Country::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function state()
     {
         return $this->belongsTo(State::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function city()
     {
         return $this->belongsTo(City::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function hobbies()
     {
         return $this->belongsToMany(Hobby::class, "user_hobbies", "user_id", "hobby_id");
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);

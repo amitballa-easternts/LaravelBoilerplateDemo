@@ -49,7 +49,7 @@ class ForgotPasswordAPIController extends Controller
 
     /**
      * Forgot password reset link fail response
-     * @param Request $request
+     * @param Request $request 
      * @param $response
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */

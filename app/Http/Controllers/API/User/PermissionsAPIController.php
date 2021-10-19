@@ -111,4 +111,13 @@ class PermissionsAPIController extends Controller
     {
         return Permission::setUnsetPermission($request);
     }
+    /**
+     * Export Roles Data
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export(Request $request)
+    {
+        return Excel::download(new PermissionsExport($request), 'Permission.csv');
+    }
 }

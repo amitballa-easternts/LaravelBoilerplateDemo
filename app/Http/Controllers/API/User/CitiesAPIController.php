@@ -117,4 +117,14 @@ class CitiesAPIController extends Controller
     {
         return Excel::download(new CitiesExport($request), 'city.csv');
     }
+
+    /**
+     * Import bulk
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function importBulk(Request $request)
+    {
+        return User::importBulk($request, new CitiesImport(), config('constants.models.city_model'), config('constants.import_dir_path.city_dir_path'));
+    }
 }

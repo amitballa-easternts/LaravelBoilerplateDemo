@@ -118,4 +118,13 @@ class HobbiesAPIController extends Controller
     {
         return Excel::download(new HobbiesExport($request), 'hobby.csv');
     }
+    /**
+     * Import bulk
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function importBulk(Request $request)
+    {
+        return User::importBulk($request, new HobbiesImport(), config('constants.models.hobby_model'), config('constants.import_dir_path.hobby_dir_path'));
+    }
 }
